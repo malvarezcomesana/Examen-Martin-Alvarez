@@ -1,0 +1,20 @@
+version: "3.8"
+services:
+  dns:
+    build: .
+    container_name: dns-server
+    ports:
+      - "53:53/udp"
+    networks:
+      dns_network:
+        ipv4_address: 172.16.0.1
+    volumes:
+      - ./named.conf:/etc/bind/named.conf
+      - ./db.tendaelectronica.int:/etc/bind/zones/db.tendaelectronica.int
+
+networks:
+  dns_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.16.0.0/24
